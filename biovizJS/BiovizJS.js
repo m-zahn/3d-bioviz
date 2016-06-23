@@ -15,7 +15,8 @@
             pdbCustomUrl: null,
             pdbxCustomUrl: null,
             advancedRepresentation: false, // TODO : Disable advance rep  as AlphaShape by option
-            background: null
+            background: null,
+            height: null
         },
         biovizAPI: null,
 
@@ -35,8 +36,10 @@
             this.element.empty();
 
             var that = this;
+            
+            var definedHeight = this.options.height ? 'height="'+ this.options.height+ '"' : '';
 
-            this.content = $('<iframe src="' + this.options.biovizPath + '" name="biovizFrame" id="biovizFrame" allowfullscreen frameborder="0" width="100%"' +
+            this.content = $('<iframe src="' + this.options.biovizPath + '" name="biovizFrame" id="biovizFrame" allowfullscreen frameborder="0" width="100%"' + definedHeight +
                             ' seamless="seamless" scrolling="no"></iframe>').bind('load', function(event) {
                                 that.onReady(this, event);
                             }).appendTo($(this.element));

@@ -1,36 +1,47 @@
 <meta charset="UTF-8">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
-<script src="https://cdn.rawgit.com/calipho-sib/nextprot-js/v0.0.50/dist/nextprot.js"></script>
+<script src="https://cdn.rawgit.com/calipho-sib/nextprot-js/v0.0.67/src/nextprot-core.js"></script>
 <script src="biovizJS/library/jquery-ui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/3d.css">
-<link rel="stylesheet" href="css/dots.css" type="text/css">
+<script src="biovizJS/library/jquery.ui-contextmenu.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="biovizJS/css/bioviz-theme/jquery-ui.min.css" type="text/css">
+<!--<link rel="stylesheet" href="biovizJS/css/style.css" type="text/css">-->
+<style>
+    body{
+        text-align: center;
+    }
+    #bioviz{
+        height:500px; 
+        width:700px;
+        margin:0 auto;
+    }
+    #inspector{
+        text-align: center;
+        margin-bottom:40px;
+    }
+</style>
 
 <h1> Test 3D bioviz</h1>
-<div id=gl> </div>
-<div id=inspector>
-    <h1>Choose PDB Id:</h1>
+<div id="gl"> </div>
+<div id="inspector">
+    <h3>Choose PDB Id:</h3>
     <select id="pdbList" style="width:100px">
     </select>
-    <h1>Choose Style</h1>
-    <ul>
-        <li id=cartoon>Cartoon</li>
-        <li id=preset>Preset</li>
-        <li id=tube>Tube</li>
-        <li id=lines>Lines</li>
-        <li id=line-trace>Line Trace</li>
-        <li id=sline>Smooth Line Trace</li>
-        <li id=trace>Trace</li>
-    </ul>
-    <span>Powered by <a target="_blank" href="http://biojs.io/d/bio-pv">BioJS PV WebGL library</a></span>
+    <h3>Highlight :</h3>
+    <div style="margin-top: 20px;">
+        <button id="firstSelect" class="btn btn-default">Helix B : 33 - 43</button>
+        <button id="secondSelect" class="btn btn-default">Helix A : 91 - 97</button>
+    </div>
 </div>
 
 <body>
-    <div id="bioviz"></div>
+    <div style="width:100%;">
+        <div id="bioviz"></div>
+    </div>
 </body>
 <script src='js/main.js'></script>
 
-<div class="dots-loader" style="margin-left: 50% ;margin-top: 10% ;">
+<div class="dots-loader" style="margin-left: 50% ;margin-top: 10%;">
     Loading…
 </div>
 <script type="text/javascript" src="biovizJS/BiovizJS.js"></script>
