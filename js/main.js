@@ -18,7 +18,6 @@ var options = {
     background: '#333333',
     pdbCustomUrl: nx.getApiBaseUrl() + "/pdb/${id}",
     height: "400"
-
 };
 
 $.getJSON("https://api.nextprot.org/entry/" + entry + "/identifier.json", function (data) {
