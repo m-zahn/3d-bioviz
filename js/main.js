@@ -18,6 +18,9 @@ var options = {
     background: '#333333',
     pdbCustomUrl: nx.getApiBaseUrl() + "/pdb/${id}",
     height: "400"
+    // New option to avoid default representations
+    // You then must set the representation of each chan you want
+    // defaultRepresentations: false
 };
 
 $.getJSON("https://api.nextprot.org/entry/" + entry + "/identifier.json", function (data) {
@@ -47,7 +50,7 @@ $.getJSON("https://api.nextprot.org/entry/" + entry + "/identifier.json", functi
         })
 
 
-        //        TO get bioviz instance : 
+        //        TO get bioviz instance :
         //        var api = biovizWidget.bioviz("getInstance");
         //        api.loadStructure();
         //        console.log(api);
@@ -63,17 +66,9 @@ $("#pdbList").change(function (elem) {
     console.log(accession);
     $("#gl").hide();
     $(".dots-loader").show();
-    var pdbDisplayed = biovizWidget.bioviz("getStructuresByPDBID");
-    console.log("pdbDisplayed");
-    console.log(pdbDisplayed);
 
-    //Remove each of them
-    pdbDisplayed.forEach(function (pdb) {
-        biovizWidget.bioviz("deleteStructure", pdb);
-    })
-
-    //Could be usefull :
-    //    biovizWidget.bioviz('clearAllStructures')
+    // Delete all structures contained by the scene
+    biovizWidget.bioviz('deleteAllStructures');
 
     //Display the new pdb
     biovizWidget.bioviz("loadStructure", accession);

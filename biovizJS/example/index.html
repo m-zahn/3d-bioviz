@@ -56,7 +56,7 @@
     <div class="container">
       <!-- Example row of columns -->
       <div class="row">
-        <div class="col-md-6 row-eq-height" id="bioviz">
+        <div class="col-md-6" id="bioviz">
         </div>
         <div class="col-md-6">
           <h2>BiovizJS App</h2>
@@ -116,7 +116,6 @@
     <script type="text/javascript">
         // Set bioviz options
         var options = {
-          structureToLoad: '4MQT',
           biovizPath: '../bioviz.html',
           enableScriptPlayer: true,
           enableWidgetManager: true,
@@ -163,6 +162,15 @@
             } catch (e) {
                 console.error('Error on creating toolbar widget : ', e);
             }
+
+            // Example of using promise with BiovizJS API
+            var promise = biovizEmbedded.bioviz('loadStructure', '4MQT');
+            promise.then(function(val) {
+                var selection = biovizEmbedded.bioviz('getObjects3DFromSelection', '4MQT:Protein:A');
+                biovizEmbedded.bioviz('colorBy', [255,0,0], selection);
+            }).catch(function(val) {
+                console.log(val);
+            });
         }
 
     </script>

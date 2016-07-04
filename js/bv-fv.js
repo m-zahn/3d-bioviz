@@ -14,10 +14,12 @@ $(window).ready(function () { // Declare nx global variables
     // Set bioviz options
     var bv_options = {
         startScript: false,
-        structureToLoad: "",
         background: '#333333',
         pdbCustomUrl: nx.getApiBaseUrl() + "/pdb/${id}",
         height: "350"
+        // New option to avoid default representations
+        // You then must set the representation of each chain you want
+        // defaultRepresentations: false
     };
     // Set featureViewer options
     var fv_options = {
@@ -291,7 +293,6 @@ $(window).ready(function () { // Declare nx global variables
             //        var firstPDBValue = "1A7F";
 
             if (firstPDBValue != null) {
-                bv_options.structureToLoad = firstPDBValue;
                 identifier = firstPDBValue;
                 biovizWidget = $("#bioviz").bioviz(bv_options);
 
@@ -300,8 +301,20 @@ $(window).ready(function () { // Declare nx global variables
                     ready: function (event) {
                         nx.getProteinSequence(entry).then(function (data) {
                             sequence = data[0].sequence;
-                            // ?? it's like the pdb hasnt finish to load, i have to do it with settimeout :
-                            setTimeout(function () { getElement()}, 4000);
+
+                            // Instead of using structureToLoad option with which you doesn't know when the structure is
+                            // loaded, you better have to call API loadStructure method when BiovizJS is ready.
+
+                            // Display the first pdb
+                            var promise = biovizWidget.bioviz("loadStructure", firstPDBValue);
+
+                            // Reload list of associated mol
+                            promise.then(function () {
+                                getElement();
+                            }).catch(function(error) {
+                                console.warn(error);
+                            });
+
                             initMenuEvent();
                         })
                     }
@@ -328,84 +341,97 @@ $(window).ready(function () { // Declare nx global variables
     }
 
     function hideElem(elem) {
-        var stringSelection = identifier + ":" + elem.type + ":" + elem.id;
+        var stringSelection = identifier + ":" + elem;
         var ObjectSelection = biovizWidget.bioviz("getObjects3DFromSelection", stringSelection);
         biovizWidget.bioviz("hide", ObjectSelection);
     }
 
     function showElem(elem) {
-        var stringSelection = identifier + ":" + elem.type + ":" + elem.id;
+        var stringSelection = identifier + ":" + elem;
         var ObjectSelection = biovizWidget.bioviz("getObjects3DFromSelection", stringSelection);
         biovizWidget.bioviz("show", ObjectSelection, true);
     }
 
-    function showOne(list, elem) {
-        list.forEach(function (l) {
-            if (l.id === elem) {
-                showElem(l);
-            } else hideElem(l);
-        })
-
+    // You can center and anchor on showed object, so it is centered on the scene and you rotate around it
+    function centerElem(elem, duration) {
+        var stringSelection = identifier + ":" + elem;
+        var ObjectSelection = biovizWidget.bioviz("getObjects3DFromSelection", stringSelection);
+        // When zooming (second parameter to true), you don't need to call anchorOnSelection method
+        biovizWidget.bioviz("centerOnSelection", ObjectSelection, true, duration);
     }
 
+    // Hide all chains of the current structure
+    function hideAll() {
+        var listMols = biovizWidget.bioviz("getMoleculesFromStructure", identifier).forEach(function(elem) {
+            hideElem(elem);
+        });
+    }
+
+    // Show all chains of the current structure
     function showAll(list) {
-        list.forEach(function (l) {
-                showElem(l);
-            })
-            // with lower opacity ?
+        var listMols = biovizWidget.bioviz("getMoleculesFromStructure", identifier).forEach(function(elem) {
+            showElem(elem);
+        });
+        var ObjectSelection = biovizWidget.bioviz("getObjects3DFromSelection", identifier);
+        // When zooming (second parameter to true), you don't need to call anchorOnSelection method
+        biovizWidget.bioviz("centerOnSelection", ObjectSelection, true, 1000);
+        // with lower opacity ?
     }
 
     function getElement() {
         console.log("getElement");
 
-        listMol = biovizWidget.bioviz("getMoleculesFromStructure", identifier).map(function (l) {
-            return {
-                type: l.type,
-                id: l.id
-            }
-        });
+        // Retrieve proteinic chains of the structure
+        listMol = biovizWidget.bioviz("getProteinicMoleculesFromStructure", identifier);
+
         // First mol to be shown
         var firstElem = listMol[0];
 
         // Reset molList
         $("#molList").html("");
 
+        // Hide default representations and show only first item
+        hideAll();
+        showElem(firstElem);
+        centerElem(firstElem);
+
         // Add chain to input list and hide 3D object of chain !== firstElem
         listMol.forEach(function (m) {
-            $('#molList').append($("<option></option>").val(m.id).html(m.type + " : " + m.id));
-            if (m.id !== firstElem.id) {
-                hideElem(m);
-            }
+            $('#molList').append($("<option></option>").val(m).html(m));
         });
     }
 
     function initMenuEvent() {
-        
+
         // If pdb identifier changes
         $("#pdbList").change(function (elem) {
+            // Disable show context when loading a new file
+            $("#showContext").prop('checked', false);
+
             var accession = this.value;
             identifier = this.value;
             console.log('accession : ' + accession);
-            var pdbDisplayed = biovizWidget.bioviz("getStructuresByPDBID");
-            console.log("pdbDisplayed");
-            console.log(pdbDisplayed);
 
-            //Remove each of them
-            pdbDisplayed.forEach(function (pdb) {
-                biovizWidget.bioviz("deleteStructure", pdb);
-            })
+            // Delete all structures contained by the scene
+            biovizWidget.bioviz('deleteAllStructures');
 
             //Display the new pdb
-            biovizWidget.bioviz("loadStructure", accession);
-            
+            var promise = biovizWidget.bioviz("loadStructure", accession);
+
             // Reload list of associated mol
-            setTimeout(function () { getElement()}, 4000);
+            promise.then(function () {
+                getElement();
+            }).catch(function(error) {
+                console.warn(error);
+            });
         });
-        
+
         // If mol id changes
         $("#molList").change(function (elem) {
+            hideAll();
             var chain = this.value;
-            showOne(listMol, chain);
+            showElem(chain);
+            centerElem(chain);
             if ($("#showContext").prop("checked")) {
                 $("#showContext").prop("checked", false);
             }
@@ -415,26 +441,24 @@ $(window).ready(function () { // Declare nx global variables
                 if (this.checked) {
                     showAll(listMol);
                 } else {
+                    hideAll();
+
                     var chain = $("#molList").val();
-                    showOne(listMol, chain);
+                    showElem(chain);
+                    centerElem(chain, 1000);
                 }
             })
     }
 
     function highlightFromRange(range) {
-        var listChains = biovizWidget.bioviz("getMoleculesFromStructure", identifier).map(function (l) {
-            return {
-                type: l.type,
-                id: l.id
-            }
-        });
+        var listChains = biovizWidget.bioviz("getProteinicMoleculesFromStructure", identifier);
         console.log("listChains");
         console.log(listChains);
 
         biovizWidget.bioviz("resetHighlights");
 
         listChains.forEach(function (c) {
-            var params = identifier + ":" + c.type + ":" + c.id;
+            var params = identifier + ":" + c;
             console.log("params : " + params);
             var selection = biovizWidget.bioviz("getObjects3DFromSelection", params);
             console.log("selection");

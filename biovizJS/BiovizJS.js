@@ -12,11 +12,11 @@
             startScript: false,
             enableScriptPlayer: false,
             enableWidgetManager: false,
+            defaultRepresentations: true,
             pdbCustomUrl: null,
             pdbxCustomUrl: null,
             advancedRepresentation: false, // TODO : Disable advance rep  as AlphaShape by option
-            background: null,
-            height: null
+            background: null
         },
         biovizAPI: null,
 
@@ -36,12 +36,17 @@
             this.element.empty();
 
             var that = this;
-            
-            var definedHeight = this.options.height ? 'height="'+ this.options.height+ '"' : '';
 
-            this.content = $('<iframe src="' + this.options.biovizPath + '" name="biovizFrame" id="biovizFrame" allowfullscreen frameborder="0" width="100%"' + definedHeight +
-                            ' seamless="seamless" scrolling="no"></iframe>').bind('load', function(event) {
+            $(this.element).css({
+                display: 'flex'
+            });
+
+            this.content = $('<iframe src="' + this.options.biovizPath + '" name="biovizFrame" ' +
+                            'id="biovizFrame" class="biovizWidget"' +
+                            'scrolling="no" seamless="seamless" frameborder="0" allowfullscreen></iframe>').bind('load', function(event) {
                                 that.onReady(this, event);
+                            }).css({
+                                flex: 1
                             }).appendTo($(this.element));
         },
         /**
@@ -58,6 +63,8 @@
 
             var iframeDocument = $(iframe).contents().context.contentDocument;
             biovizAPI = iframeDocument.biovizAPI;
+
+            biovizAPI._setDefaultRepresentations(this.options.defaultRepresentations);
 
             if (!biovizAPI.isAvailable()) {
                 event.data = 'Unable to start WebGL context';

@@ -15,10 +15,6 @@ html, body {
   pointer-events: none;
 }
 
-/*select {
-  height: 40px;
-}*/
-
 #moleculeSelector {
 	width: 90%;
 	height: 30%;
@@ -42,22 +38,16 @@ img.imageLabels {
   color: red;
 }
 
-/* Bootstrap hack to get equal height for row columns */
-.row-eq-height {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display:         flex;
-}
-
 /* Legend CSS style */
 .legend-mapping {
     position: relative;
 }
+
 .legend-mapping input {
     padding-left: 20px;
     width: 30px;
 }
+
 .legend-mapping .color-box {
     width: 10px;
     height: 10px;
@@ -85,18 +75,3 @@ img.imageLabels {
     float: right;
     margin-right: 10px;
 }
-
-/*div:-ms-fullscreen {
-  position:absolute;
-  left:0px;
-  top:0px;
-  width: 100%;
-  height: 100%;
-}
-
-@media all and (max-width: 640px) {
-  /* here put your style specific for embedded case */
-  /*body { font-size : 60%; }*/
-
-  /*img { width : 48px; }*/
-/*}*/

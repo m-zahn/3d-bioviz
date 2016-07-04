@@ -205,7 +205,7 @@
                 for (var k in tab) {
                     var key = tab[k];
                     var moleculeName = key.toString();
-                    text += '<option> ' + moleculeName + ' </option>';
+                    text += '<option value="' + moleculeName + '">' + moleculeName + '</option>';
                 }
                 $('#listMolecules').html(text);
             }
@@ -540,11 +540,13 @@
                 function() {
                     $('#toolbarResetScene')[0].checked = false;
                     that.bioviz.bioviz('resetScene');
+                    that.updateSelection();
                 });
             $('#toolbarResetRepr').click(
                 function() {
                     $('#toolbarResetRepr')[0].checked = false;
                     that.bioviz.bioviz('resetRepresentations');
+                    that.updateSelection();
                 });
             $('#toolbarResetHighlight').click(
                 function() {

@@ -229,6 +229,122 @@ Do not use when using a deployed BiovizJS App
         <dl>
             
 <dt>
+    <h4 class="name" id="_setDefaultRepresentations"><span class="type-signature"></span>_setDefaultRepresentations<span class="signature">(bool)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Specify if API loads default representations after loading a structure
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>bool</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">boolean</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="addListener"><span class="type-signature"></span>addListener<span class="signature">(type, listener)</span><span class="type-signature"></span></h4>
     
     
@@ -878,6 +994,72 @@ Do not use when using a deployed BiovizJS App
         
             
 <dt>
+    <h4 class="name" id="deleteAllStructures"><span class="type-signature"></span>deleteAllStructures<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Delete all structures of the scene
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="deleteStructure"><span class="type-signature"></span>deleteStructure<span class="signature">(structureID)</span><span class="type-signature"></span></h4>
     
     
@@ -1384,6 +1566,145 @@ Do not use when using a deployed BiovizJS App
         
             
 <dt>
+    <h4 class="name" id="getProteinicMoleculesFromStructure"><span class="type-signature"></span>getProteinicMoleculesFromStructure<span class="signature">(structureID)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Get each proteinic molecule names contained by a structure
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>structureID</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">String</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">PDB identifier of the structure</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    An array containing identifier of each molecules of the structure
+</div>
+
+
+
+<dl>
+  <dt>
+    Type
+  </dt>
+  <dd>
+    
+<span class="param-type">Array</span>
+
+
+  </dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="getResiduesFromMolecule"><span class="type-signature"></span>getResiduesFromMolecule<span class="signature">(structureID, moleculeID,)</span><span class="type-signature"> &rarr; {Array}</span></h4>
     
     
@@ -1863,7 +2184,7 @@ Do not use when using a deployed BiovizJS App
         
             
 <dt>
-    <h4 class="name" id="hide"><span class="type-signature"></span>hide<span class="signature">(selection)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="hide"><span class="type-signature"></span>hide<span class="signature">(selection, recursive)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1922,6 +2243,30 @@ Do not use when using a deployed BiovizJS App
               
   
               <td class="description last">A selection containing one or multiple objects</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>recursive</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">boolean</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Do a recursive hide for the whole selection. For instance, when hiding a Structure,
+                                   it also hides all associated Molecules, Ligand, etc...</td>
           </tr>
   
     
@@ -4264,7 +4609,8 @@ TODO : delete a particular label</td>
   
               
   
-              <td class="description last">Do a recursive show for the whole selection</td>
+              <td class="description last">Do a recursive show for the whole selection. For instance, when showing a Molecule,
+                                   it also shows the parent Structure</td>
           </tr>
   
     
@@ -4987,7 +5333,7 @@ TODO : delete a particular label</td>
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.4.0</a>
-    on 2016-06-23T10:36:04+02:00
+    on 2016-07-04T17:55:18+02:00
     </span>
         </footer>
       </div>
